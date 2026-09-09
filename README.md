@@ -195,3 +195,9 @@ The pieces that would move to a Node server unchanged: `src/parser.js`,
 a served web page, and `store.js` talks to a database / per-user files instead of
 `ipcRenderer`. `pdf.js` and `katex` already run in a browser. Same shape as the
 terminal chat-room app; playit.gg would expose it the same way.
+
+## License
+
+Proprietary — all rights reserved. See [LICENSE](LICENSE). Not open source.
+Bundled components (Electron, pdf.js, tesseract.js, KaTeX, …) keep their own
+permissive licenses.

@@ -1,0 +1,28 @@
+Copyright (c) 2026 Volt. All rights reserved.
+
+("Volt" below means the copyright holder — put your name here if you like.)
+
+This software, including its source code, design, and assets, is proprietary
+and confidential. It is NOT open source.
+
+You MAY:
+  - install and run the official Volt application for teaching and study;
+  - run your own instance of the Volt server for your school or class.
+
+You MAY NOT, without prior written permission from Volt:
+  - copy, modify, translate, or create derivative works of the source code;
+  - redistribute, publish, sublicense, rent, sell, or host the software or any
+    portion of it for others;
+  - remove or alter this notice.
+
+Third-party components bundled with the application (including Electron,
+Chromium, pdf.js, tesseract.js, and KaTeX) remain licensed under their own
+terms; their license texts are included with the built application and in
+node_modules. Nothing here restricts your rights under those licenses with
+respect to those components.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE
+USE OF THE SOFTWARE.

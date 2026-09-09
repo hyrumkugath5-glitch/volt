@@ -8,7 +8,7 @@
     "start": "node server.mjs",
     "sync": "node sync-shared.mjs"
   },
-  "license": "MIT",
+  "license": "UNLICENSED",
   "dependencies": {
     "@napi-rs/canvas": "^0.1.65",
     "express": "^4.21.2",
@@ -16,5 +16,6 @@
     "katex": "^0.16.11",
     "pdfjs-dist": "^4.7.76",
     "tesseract.js": "^5.1.1"
-  }
+  },
+  "private": true
 }
