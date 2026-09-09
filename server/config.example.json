@@ -1,0 +1,6 @@
+{
+  "_comment": "Copy to config.json and set masterKey. On first boot the server hashes it and rewrites this file, replacing masterKey with masterKeyHash. sessionSecret is generated if absent.",
+  "masterKey": "change-me-owner-master-key",
+  "port": 3200,
+  "host": "0.0.0.0"
+}

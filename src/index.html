@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'" />
+  <title>Volt</title>
+  <link rel="stylesheet" href="../node_modules/katex/dist/katex.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav id="sidebar">
+    <div class="brand">
+      <span class="logo">⚡</span>
+      <span>Volt</span>
+    </div>
+    <button class="navbtn active" data-view="library">📚 Library</button>
+    <button class="navbtn" data-view="import">➕ New from worksheet</button>
+    <button class="navbtn" data-view="settings">⚙ Settings</button>
+    <div class="spacer"></div>
+    <button id="calcToggle" class="navbtn" title="Calculator (Ctrl+K)">🧮 Calculator</button>
+  </nav>
+
+  <main id="main"></main>
+
+  <!-- Calculator panel -->
+  <div id="calcPanel" class="calc-panel hidden">
+    <div class="calc-head">
+      <span>Calculator</span>
+      <button id="calcClose">✕</button>
+    </div>
+    <input id="calcDisplay" class="calc-display" type="text" placeholder="e.g. √(3² + 4²)" />
+    <div id="calcPreview" class="calc-preview"></div>
+    <div id="calcResult" class="calc-result">0</div>
+    <div class="calc-keys">
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button data-k="/">÷</button><button data-k="(">(</button><button data-k=")">)</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+      <button data-k="*">×</button><button data-k="^">xʸ</button><button data-k="sqrt(">√</button>
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+      <button data-k="-">−</button><button data-k="pi">π</button><button data-k="sin(">sin</button>
+      <button data-k="0">0</button><button data-k=".">.</button><button data-k="00">00</button>
+      <button data-k="+">+</button><button data-k="cos(">cos</button><button data-k="tan(">tan</button>
+      <button class="wide" id="calcClear">Clear</button>
+      <button class="wide" id="calcBack">⌫</button>
+      <button class="wide accent" id="calcEq">=</button>
+    </div>
+    <div class="calc-hint">Type or paste √, ², ³, π, ×, ÷ directly. Functions: sqrt, sin, cos, tan, asin, acos, atan, log, ln, abs, round. Angles in degrees.</div>
+  </div>
+
+  <script>
+    // Crash breadcrumbs to a temp file — handy while the app is young.
+    // Disable by removing this block; it never affects normal use.
+    (function () {
+      try {
+        const fs = require('fs');
+        const LOG = require('path').join(require('os').tmpdir(), 'volt-renderer.log');
+        const w = (m) => { try { fs.appendFileSync(LOG, `[${new Date().toISOString()}] ${m}\n`); } catch {} };
+        fs.writeFileSync(LOG, '');
+        window.__voltlog = w;
+        const errH = (e) => w('ERROR ' + (e.error && e.error.stack || e.message || '') + ' @' + (e.filename || '') + ':' + (e.lineno || ''));
+        window.addEventListener('error', errH, true);
+        window.addEventListener('unhandledrejection', (e) => w('REJECT ' + (e.reason && e.reason.stack || e.reason)));
+      } catch (err) { /* packaged / no node access — fine */ }
+    })();
+  </script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

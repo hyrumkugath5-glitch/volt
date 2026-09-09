@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Volt</title>
+  <link rel="stylesheet" href="/vendor/katex/katex.min.css" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="web">
+  <div class="topbar">
+    <span class="brand"><span class="bolt">⚡</span> Volt</span>
+    <span class="who"><span id="whoName" class="muted"></span>
+      <button class="link" id="changeName" hidden>change</button>
+      <a href="/admin">Teachers</a></span>
+  </div>
+
+  <div class="wrap" id="app"></div>
+
+  <!-- calculator -->
+  <button id="calcToggle" class="calc-fab" title="Calculator (Ctrl+K)">🧮</button>
+  <div id="calcPanel" class="calc-panel hidden">
+    <div class="calc-head"><span>Calculator</span><button id="calcClose">✕</button></div>
+    <input id="calcDisplay" class="calc-display" type="text" placeholder="e.g. √(3² + 4²)" />
+    <div id="calcPreview" class="calc-preview"></div>
+    <div id="calcResult" class="calc-result">0</div>
+    <div class="calc-keys">
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button data-k="/">÷</button><button data-k="(">(</button><button data-k=")">)</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+      <button data-k="*">×</button><button data-k="^">xʸ</button><button data-k="sqrt(">√</button>
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+      <button data-k="-">−</button><button data-k="pi">π</button><button data-k="sin(">sin</button>
+      <button data-k="0">0</button><button data-k=".">.</button><button data-k="00">00</button>
+      <button data-k="+">+</button><button data-k="cos(">cos</button><button data-k="tan(">tan</button>
+      <button class="wide" id="calcClear">Clear</button>
+      <button class="wide" id="calcBack">⌫</button>
+      <button class="wide accent" id="calcEq">=</button>
+    </div>
+    <div class="calc-hint">Type √, ², ³, π, ×, ÷ directly. Functions: sqrt, sin, cos, tan, log, ln, abs. Degrees.</div>
+  </div>
+
+  <script type="module" src="/student.mjs"></script>
+</body>
+</html>

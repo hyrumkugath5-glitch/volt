@@ -1,0 +1,20 @@
+{
+  "name": "volt-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Volt — teacher tool: worksheets into flashcards, on a server students join",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "sync": "node sync-shared.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.65",
+    "express": "^4.21.2",
+    "express-fileupload": "^1.5.1",
+    "katex": "^0.16.11",
+    "pdfjs-dist": "^4.7.76",
+    "tesseract.js": "^5.1.1"
+  }
+}

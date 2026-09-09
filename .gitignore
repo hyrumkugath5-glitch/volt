@@ -1,0 +1,7 @@
+node_modules/
+dist/
+_shots/
+*.log
+
+_*.png
+_*.mjs
