@@ -213,6 +213,22 @@ function cleanBlock(s) {
   return out;
 }
 
+// Kuta stamps the answer right after each problem on its answer-key PDFs:
+// "{ 36 }", "{ -17 }", "{ 3, 5 }", or "No solution." / "All real numbers.".
+// Pull a trailing one off and return it separately so the question stays clean.
+function pluckKutaAnswer(raw) {
+  const s = raw.trim();
+  const b = s.match(/\{\s*([^{}]{0,48}?)\s*\}\s*$/);
+  if (b) {
+    const inner = b[1].replace(/\s*−\s*/g, '-').replace(/\s+/g, ' ').trim();
+    const q = s.slice(0, b.index).trim();
+    return { question: q, answer: /\d/.test(inner) || /^(x|no|all)/i.test(inner) ? inner : '' };
+  }
+  const w = s.match(/(No solutions?|All real numbers|Infinitely many solutions)\.?\s*$/i);
+  if (w) return { question: s.slice(0, w.index).trim(), answer: w[1].replace(/s$/i, '') };
+  return { question: s, answer: '' };
+}
+
 // Detect an answer-key region and return { [num]: answer }
 function extractAnswerKey(fullText) {
   const m0 = fullText.match(/answer\s*key|(?:^|\n)\s*(?:answers?|solutions?)\s*[:.]?\s*(?=\n|\s+\d)/i);
@@ -254,9 +270,9 @@ export function splitProblems(fullText) {
   if (marks.length >= 2) {
     for (let i = 0; i < marks.length; i++) {
       const end = i + 1 < marks.length ? marks[i + 1].markStart : body.length;
-      const q = cleanBlock(body.slice(marks[i].start, end));
+      const { question: q, answer: inlineAns } = pluckKutaAnswer(cleanBlock(body.slice(marks[i].start, end)));
       if (q.length < 2) continue;
-      cards.push({ number: marks[i].num, question: q, answer: key[marks[i].num] || '' });
+      cards.push({ number: marks[i].num, question: q, answer: key[marks[i].num] || inlineAns || '' });
     }
   } else {
     // fall back: split on blank lines

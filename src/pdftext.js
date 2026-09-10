@@ -87,6 +87,49 @@ export function attachSuperscripts(items, bodyScale) {
   return arr.filter((it) => !it.gone);
 }
 
+// Kuta proportions: "num_L / den_L  =  num_R / den_R" laid out as three rows —
+// numerators just above the "=", denominators just below, the "N)" label centred
+// on the "=". Re-assemble each into one line: "N) (num_L)/(den_L) = (num_R)/(den_R)".
+// A numerator/denominator can be a binomial ("x + 7"), so we join every token in
+// the row on the correct side of the "=".
+export function assembleProportions(items, bodyScale) {
+  const arr = items.map((it) => ({ ...it, gone: false }));
+  const band = (bodyScale || 12) * 1.4;
+  const cx = (it) => it.x + (it.w || 0) / 2;
+  const out = [];
+
+  for (const eq of arr) {
+    if (eq.gone || eq.s.trim() !== '=') continue;
+    const ex = cx(eq);
+    const near = (it) => !it.gone && it !== eq && !it.s.trim().startsWith('{');
+    const above = arr.filter((it) => near(it) && it.y > eq.y + 1.5 && it.y < eq.y + band);
+    const below = arr.filter((it) => near(it) && it.y < eq.y - 1.5 && it.y > eq.y - band);
+    if (!above.length || !below.length) continue; // a plain equation, not a stacked fraction
+
+    const side = (g, left) => g.filter((it) => (left ? cx(it) < ex : cx(it) >= ex)).sort((a, b) => a.x - b.x);
+    const join = (g) => g.map((it) => it.s.trim()).join(' ').replace(/\s+/g, ' ').replace(/\(\s+/g, '(').replace(/\s+\)/g, ')').trim();
+    const frac = (n, d) => {
+      const N = join(n);
+      const D = join(d);
+      if (N && D) return `(${N})/(${D})`;
+      return N || (D ? `1/(${D})` : '?');
+    };
+    const lNum = side(above, true), lDen = side(below, true);
+    const rNum = side(above, false), rDen = side(below, false);
+    if ((!lNum.length && !lDen.length) || (!rNum.length && !rDen.length)) continue;
+
+    const label = arr.find((it) => !it.gone && /^\d{1,3}\)$/.test(it.s.trim()) && it.x < eq.x && Math.abs(it.y - eq.y) < band);
+    const text = `${label ? label.s.trim() + ' ' : ''}${frac(lNum, lDen)} = ${frac(rNum, rDen)}`;
+
+    for (const it of [...above, ...below]) it.gone = true;
+    eq.gone = true;
+    if (label) label.gone = true;
+    out.push({ x: (label || eq).x, y: eq.y, w: 220, s: text });
+  }
+  for (const it of arr) if (!it.gone) out.push(it);
+  return out;
+}
+
 /* ------------------------------- fractions --------------------------- */
 export function pairFractions(items) {
   const live = items.map((it) => ({ ...it, dead: false }));
@@ -94,6 +137,7 @@ export function pairFractions(items) {
   for (let i = 0; i < live.length; i++) {
     const A = live[i];
     if (A.dead) continue;
+    if (A.s.trim().startsWith('{')) continue; // never fold an answer-key "{ … }"
     const acx = A.x + A.w / 2;
     let best = null;
     for (let j = 0; j < live.length; j++) {
@@ -128,7 +172,7 @@ function assembleStackedProblems(lines, bodyScale) {
   const near = (a, b) => a && b && Math.abs(a.bbox.y0 - b.bbox.y0) < bodyScale * 2.6;
   const xOverlap = (a, b) => a && b && Math.min(a.bbox.x1, b.bbox.x1) - Math.max(a.bbox.x0, b.bbox.x0) > 4;
   const isProblem = (t) => /^\s*\d{1,3}\)/.test(t);
-  const plain = (l) => l && !l.text.includes('=') && !isProblem(l.text);
+  const plain = (l) => l && !l.text.includes('=') && !isProblem(l.text) && !ANSWER_LINE.test(l.text);
   const out = [];
   for (let i = 0; i < lines.length; i++) {
     const L = lines[i];
@@ -247,9 +291,49 @@ function modeScale(items) {
   return best;
 }
 
+// Kuta answer-key PDFs print the solution as "{ 36 }" on its own row, right
+// under the problem. The braces and the number are separate glyph runs, so the
+// bare number lines up under the equation and the fraction assemblers turn
+// "20 = 1 + 5a + 4" over "{ 3 }" into "(20)/(3)". Fuse each "{ … }" run into one
+// atom so nothing downstream can pair with the number inside it.
+export function collapseBraces(items) {
+  const rows = new Map();
+  for (const it of items) {
+    const yk = Math.round(it.y);
+    let k = null;
+    for (const key of rows.keys()) if (Math.abs(key - yk) <= 3) { k = key; break; }
+    if (k == null) { k = yk; rows.set(yk, []); }
+    rows.get(k).push(it);
+  }
+  const out = [];
+  for (const parts of rows.values()) {
+    parts.sort((a, b) => a.x - b.x);
+    let i = 0;
+    while (i < parts.length) {
+      if (parts[i].s.trim() === '{') {
+        let j = i + 1;
+        while (j < parts.length && parts[j].s.trim() !== '}') j++;
+        if (j < parts.length) {
+          const run = parts.slice(i, j + 1);
+          const inner = run.slice(1, -1).map((p) => p.s.trim()).join(' ').replace(/\s+/g, ' ').trim();
+          const last = run[run.length - 1];
+          out.push({ x: run[0].x, y: run[0].y, w: last.x + (last.w || 0) - run[0].x, scale: run[0].scale, s: `{${inner}}` });
+          i = j + 1;
+          continue;
+        }
+      }
+      out.push(parts[i]);
+      i++;
+    }
+  }
+  return out;
+}
+
+const ANSWER_LINE = /^\s*(\{[^{}]*\}|No solutions?\.?|All real numbers\.?|Infinitely many solutions\.?)\s*$/i;
+
 /* ------------------------------- top level -------------------------- */
 export function textFromItems(items, pageWidth) {
-  items = dropPageFurniture(items.filter((it) => it.s && String(it.s).trim()));
+  items = collapseBraces(dropPageFurniture(items.filter((it) => it.s && String(it.s).trim())));
   if (!items.length) return '';
 
   const bodyScale = modeScale(items);
@@ -265,7 +349,7 @@ export function textFromItems(items, pageWidth) {
 
   const out = [];
   for (const colItems of buckets) {
-    const supered = attachSuperscripts(colItems, bodyScale);
+    const supered = attachSuperscripts(assembleProportions(colItems, bodyScale), bodyScale);
     const glyphs = superHeavy ? supered : pairFractions(supered);
     const rows = new Map();
     for (const it of glyphs) {

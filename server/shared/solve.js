@@ -162,7 +162,7 @@ function clean(input) {
   s = s.replace(/^\s*\(\d{1,2}\)\s+(?=[a-z(])/i, ''); // "(N) " label style too
   s = s.replace(/solve(\s+the\s+(equation|inequality))?(\s+for\s+[a-z])?\s*[:.]?/i, '');
   s = s.replace(/\bfind\s+(the\s+value\s+of\s+)?[a-z]\s*[:.]?/i, '');
-  s = s.replace(/[·∙×]/g, '*').replace(/[–—]/g, '-').replace(/÷/g, '/').replace(/√/g, 'sqrt');
+  s = s.replace(/[·∙×✕⋅]/g, '*').replace(/[‐-―−]/g, '-').replace(/[÷∕]/g, '/').replace(/√/g, 'sqrt');
   // OCR noise: X/Y are really x/y; any other capital letter is a misread artifact
   s = s.replace(/[A-Z]/g, (m) => ('XY'.includes(m) ? m.toLowerCase() : ''));
   // stray letter wedged between a digit and the variable ("7Tx" -> "7x", handled
@@ -280,6 +280,13 @@ export function solve(input) {
     const combined = parse(L).sub(parse(Rr)); // R, want numerator = 0
     const poly = combined.n;
     const vs = [...poly.vars()];
+    if (vs.length === 0) {
+      // every variable term cancelled — the equation is a bare numeric claim
+      if (!/[a-z]/i.test(s)) return null; // no variable to begin with — just noise
+      return poly.coeff('').zero
+        ? { vars: [], kind: 'identity', solutions: [], answer: 'all real numbers' }
+        : { vars: [], kind: 'none', solutions: [], answer: 'no solution' };
+    }
     if (vs.length !== 1) return null;
     return solvePolyZero(poly, vs[0]);
   } catch { return null; }
