@@ -1,4 +1,4 @@
-// Ground-truth check: read a Kuta PDF, solve every worksheet problem with Volt's
+// Ground-truth check: read a Kuta PDF, solve every worksheet problem with Argon's
 // math engine, then compare against the answer-key pages in the same PDF.
 //
 //   node test/verify-key.mjs test/fixtures/exponents.pdf
@@ -89,13 +89,13 @@ for (const n of nums) {
   const mine = q ? (simplify(q) || solve(q)) : null;
   const myA = mine ? mine.answer : null;
   if (!q) { console.log(`#${String(n).padStart(2)}  ??  no question read`); continue; }
-  if (!key) { console.log(`#${String(n).padStart(2)}  --  Volt: ${myA ?? '(unsolved)'}   (no key answer parsed)`); continue; }
+  if (!key) { console.log(`#${String(n).padStart(2)}  --  Argon: ${myA ?? '(unsolved)'}   (no key answer parsed)`); continue; }
   checked++;
   const ok = myA && canon(myA) === canon(key);
   if (ok) pass++;
   else misses.push(n);
   console.log(
-    `${ok ? 'ok  ' : 'FAIL'} #${String(n).padStart(2)}  Volt: ${String(myA ?? '(unsolved)').padEnd(16)}  key: ${key}`
+    `${ok ? 'ok  ' : 'FAIL'} #${String(n).padStart(2)}  Argon: ${String(myA ?? '(unsolved)').padEnd(16)}  key: ${key}`
   );
 }
 

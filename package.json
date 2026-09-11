@@ -1,13 +1,13 @@
 {
-  "name": "volt",
+  "name": "argon",
   "version": "1.0.0",
-  "description": "Volt — turn geometry and algebra worksheets into study flashcards",
+  "description": "Argon — turn geometry and algebra worksheets into study flashcards",
   "main": "main.js",
-  "author": "Volt",
+  "author": "Hyrum Kugath",
   "license": "UNLICENSED",
   "scripts": {
     "start": "electron .",
-    "icon": "node build/make-icon.js",
+    "icon": "electron build/make-icon.js",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac",
@@ -24,9 +24,9 @@
     "tesseract.js": "^5.1.1"
   },
   "build": {
-    "appId": "com.volt.flashcards",
-    "productName": "Volt",
-    "copyright": "Copyright © 2026 Volt",
+    "appId": "com.argon.flashcards",
+    "productName": "Argon",
+    "copyright": "Copyright © 2026 Hyrum Kugath",
     "afterPack": "build/afterPack.js",
     "directories": {
       "output": "dist",
@@ -69,11 +69,11 @@
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,
-      "shortcutName": "Volt",
-      "artifactName": "Volt-${version}-Setup.${ext}"
+      "shortcutName": "Argon",
+      "artifactName": "Argon-${version}-Setup.${ext}"
     },
     "portable": {
-      "artifactName": "Volt-${version}-portable.${ext}"
+      "artifactName": "Argon-${version}-portable.${ext}"
     },
     "mac": {
       "target": [
@@ -99,7 +99,7 @@
       "gatekeeperAssess": false
     },
     "dmg": {
-      "artifactName": "Volt-${version}-${arch}.${ext}"
+      "artifactName": "Argon-${version}-${arch}.${ext}"
     },
     "linux": {
       "target": [

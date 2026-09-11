@@ -114,7 +114,7 @@ function importView() {
   app.innerHTML = '';
   app.append(el('button', { class: 'link', onclick: boot }, '← back'),
     el('h1', {}, 'New deck from a worksheet'),
-    el('div', { class: 'sub', text: 'Upload a PDF or image. Volt reads it, splits it into problems and solves the ones it can. PDFs work best.' }));
+    el('div', { class: 'sub', text: 'Upload a PDF or image. Argon reads it, splits it into problems and solves the ones it can. PDFs work best.' }));
 
   const input = el('input', { type: 'file', accept: '.pdf,.png,.jpg,.jpeg,.webp,.bmp', style: 'display:none' });
   const drop = el('div', { class: 'dropzone', text: '📄  Choose a worksheet file (PDF, PNG, JPG)' });
@@ -151,7 +151,7 @@ function reviewStage(stage, fileName, res) {
     hint: c.hint || '', typeLabel: c.typeLabel || classify(c.question || '').label, page: c.page || 1,
   }));
   const solved = model.filter((c) => c.answerSource === 'solved').length;
-  if (solved) setTimeout(() => toast(`Volt solved ${solved} problem${solved > 1 ? 's' : ''} — double-check them.`), 300);
+  if (solved) setTimeout(() => toast(`Argon solved ${solved} problem${solved > 1 ? 's' : ''} — double-check them.`), 300);
 
   const wrap = el('div', { class: 'pagewrap' });
   const preview = el('div', { class: 'page-preview' });
@@ -171,7 +171,7 @@ function reviewStage(stage, fileName, res) {
       a.addEventListener('input', () => { c.answer = a.value; c.answerSource = 'edited'; });
       h.addEventListener('input', () => { c.hint = h.value; });
       const srcTag = el('span', { class: 'tag', hidden: !['key', 'solved', 'reconstructed'].includes(c.answerSource),
-        text: c.answerSource === 'key' ? 'from key' : c.answerSource === 'reconstructed' ? 'reading picked' : 'solved by Volt' });
+        text: c.answerSource === 'key' ? 'from key' : c.answerSource === 'reconstructed' ? 'reading picked' : 'solved by Argon' });
       const row = el('div', { class: 'card-row' });
       const applyReading = (o) => { c.question = o.question; c.answer = o.answer; c.answerSource = 'reconstructed'; q.value = o.question; a.value = o.answer; paintCards(); };
       row.append(
@@ -185,8 +185,8 @@ function reviewStage(stage, fileName, res) {
           el('button', { class: 'btn small ghost', onclick: () => {
             const r = autoAnswer(c.question);
             if (!r) return toast("Couldn't solve — try '3 readings' or type it in.");
-            c.answer = r.answer; c.answerSource = 'solved'; a.value = r.answer; srcTag.hidden = false; srcTag.textContent = 'solved by Volt';
-          } }, '⚡ Solve'),
+            c.answer = r.answer; c.answerSource = 'solved'; a.value = r.answer; srcTag.hidden = false; srcTag.textContent = 'solved by Argon';
+          } }, '✨ Solve'),
           el('button', { class: 'btn small ghost', onclick: () => {
             if (row.querySelector('.readings')) return row.querySelector('.readings').remove();
             const p = readingsPanel(c.question, applyReading);
@@ -203,8 +203,8 @@ function reviewStage(stage, fileName, res) {
     el('button', { class: 'btn ghost', onclick: () => {
       let n = 0;
       for (const c of model) { if (c.answer.trim()) continue; const r = autoAnswer(c.question); if (r) { c.answer = r.answer; c.answerSource = 'solved'; n++; } }
-      paintCards(); toast(n ? `Solved ${n} more.` : 'Nothing else Volt can solve.');
-    } }, '⚡ Solve all blanks'),
+      paintCards(); toast(n ? `Solved ${n} more.` : 'Nothing else Argon can solve.');
+    } }, '✨ Solve all blanks'),
     el('button', { class: 'btn ghost', onclick: () => { model.push({ id: rid(), question: '', answer: '', hint: '', typeLabel: 'General problem', page: 1 }); paintCards(); } }, '+ Add card'),
     el('button', { class: 'btn', onclick: () => saveDeck() }, `Save deck (${model.length} cards)`)));
 
@@ -257,7 +257,7 @@ async function editView(id) {
         el('label', { class: 'lbl', text: 'Answer' }), a,
         el('label', { class: 'lbl', text: 'Hint' }), h,
         el('div', { class: 'row', style: 'margin-top:8px' },
-          el('button', { class: 'btn small ghost', onclick: () => { const r = autoAnswer(q.value); if (!r) return toast("Couldn't solve."); a.value = r.answer; c.answer = r.answer; } }, '⚡ Solve'),
+          el('button', { class: 'btn small ghost', onclick: () => { const r = autoAnswer(q.value); if (!r) return toast("Couldn't solve."); a.value = r.answer; c.answer = r.answer; } }, '✨ Solve'),
           el('button', { class: 'btn small danger', onclick: () => { model.splice(i, 1); paint(); } }, 'Delete card'))));
     });
   }

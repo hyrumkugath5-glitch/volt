@@ -1,4 +1,4 @@
-// Embeds the Volt icon + version metadata into the Windows Volt.exe.
+// Embeds the Argon icon + version metadata into the Windows Argon.exe.
 // We run this ourselves (via the afterPack hook) because the build uses
 // `win.signAndEditExecutable: false` to dodge electron-builder's winCodeSign
 // download, which also skips its own rcedit pass.
@@ -10,7 +10,7 @@ module.exports = async function afterPack(context) {
   const rceditMod = require('rcedit');
   const rcedit = typeof rceditMod === 'function' ? rceditMod : (rceditMod.rcedit || rceditMod.default);
 
-  const productName = context.packager.appInfo.productFilename; // "Volt"
+  const productName = context.packager.appInfo.productFilename; // "Argon"
   const version = context.packager.appInfo.version;
   const exe = path.join(context.appOutDir, `${productName}.exe`);
   const icon = path.join(__dirname, 'icon.ico');
@@ -20,10 +20,10 @@ module.exports = async function afterPack(context) {
     'file-version': version,
     'product-version': version,
     'version-string': {
-      ProductName: 'Volt',
-      FileDescription: 'Volt — worksheet flashcards',
-      CompanyName: 'Volt',
-      LegalCopyright: `Copyright © ${new Date().getFullYear()} Volt`,
+      ProductName: 'Argon',
+      FileDescription: 'Argon — worksheet flashcards',
+      CompanyName: 'Argon',
+      LegalCopyright: `Copyright © ${new Date().getFullYear()} Hyrum Kugath`,
       OriginalFilename: `${productName}.exe`,
       InternalName: productName,
     },

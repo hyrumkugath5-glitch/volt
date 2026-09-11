@@ -1,15 +1,15 @@
-Copyright (c) 2026 Volt. All rights reserved.
+Copyright (c) 2026 Hyrum Kugath. All rights reserved.
 
-("Volt" below means the copyright holder — Hyrum Kugath.)
+("Argon" below means the copyright holder — Hyrum Kugath.)
 
 This software, including its source code, design, and assets, is proprietary
 and confidential. It is NOT open source.
 
 You MAY:
-  - install and run the official Volt application for teaching and study;
-  - run your own instance of the Volt server for your school or class.
+  - install and run the official Argon application for teaching and study;
+  - run your own instance of the Argon server for your school or class.
 
-You MAY NOT, without prior written permission from Volt:
+You MAY NOT, without prior written permission from Argon:
   - copy, modify, translate, or create derivative works of the source code;
   - redistribute, publish, sublicense, rent, sell, or host the software or any
     portion of it for others;

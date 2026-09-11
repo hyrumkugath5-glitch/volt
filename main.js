@@ -45,7 +45,7 @@ function createWindow() {
     minWidth: 900,
     minHeight: 640,
     backgroundColor: '#0f1420',
-    title: 'Volt',
+    title: 'Argon',
     icon: path.join(__dirname, 'assets', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -56,16 +56,16 @@ function createWindow() {
   win.setMenuBarVisibility(false);
   win.loadFile(path.join(__dirname, 'src', 'index.html'));
 
-  if (process.env.VOLT_DEBUG) {
+  if (process.env.ARGON_DEBUG) {
     win.webContents.openDevTools({ mode: 'detach' });
     win.webContents.on('render-process-gone', (_e, d) => console.error('renderer gone:', d));
   }
 
-  // VOLT_SELFTEST=<pdf/img> — headless: read a worksheet through the real
+  // ARGON_SELFTEST=<pdf/img> — headless: read a worksheet through the real
   // pipeline, print the result, exit. Proves a packaged build actually works.
-  if (process.env.VOLT_SELFTEST) {
+  if (process.env.ARGON_SELFTEST) {
     win.webContents.once('did-finish-load', async () => {
-      const p = process.env.VOLT_SELFTEST;
+      const p = process.env.ARGON_SELFTEST;
       try {
         const data = fs.readFileSync(p).toString('base64');
         const file = { path: p, name: path.basename(p), ext: path.extname(p).toLowerCase(), data };

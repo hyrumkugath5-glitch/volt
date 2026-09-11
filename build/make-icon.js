@@ -1,17 +1,18 @@
-// Rasterises build/icon.svg via Electron's offscreen renderer:
-//   build/icon.ico       (Windows, multi-res PNG-embedded ICO)
-//   build/icon.png        (1024 — electron-builder derives .icns / linux from it)
-//   assets/icon.png       (256 — the runtime window icon)
-// Run:  npm run icon
-const { app, BrowserWindow } = require('electron');
+// Regenerates the derived icon files from build/icon.png (the master artwork).
+// To change the app icon: drop a new square PNG in as build/icon.png (1024x1024
+// ideally, 512 minimum) and run:  npm run icon
+//
+// Outputs:
+//   build/icon.ico    Windows, multi-resolution PNG-embedded ICO
+//   assets/icon.png   256 — the runtime window icon
+// build/icon.png is the macOS / Linux icon and is used as-is.
+const { app, nativeImage } = require('electron');
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const SVG = fs.readFileSync(path.join(__dirname, 'icon.svg'), 'utf8');
+const MASTER = path.join(__dirname, 'icon.png');
 const SIZES = [16, 24, 32, 48, 64, 128, 256];
-const BASE = 1024;
 
 function packIco(images) {
   const count = images.length;
@@ -36,35 +37,23 @@ function packIco(images) {
 }
 
 app.disableHardwareAcceleration();
-app.whenReady().then(async () => {
-  const htmlPath = path.join(os.tmpdir(), 'volt-icon.html');
-  fs.writeFileSync(
-    htmlPath,
-    `<!doctype html><meta charset="utf-8"><style>html,body{margin:0;padding:0;background:transparent}svg{display:block;width:${BASE}px;height:${BASE}px}</style>${SVG}`
-  );
-
-  const win = new BrowserWindow({
-    width: BASE,
-    height: BASE,
-    show: false,
-    transparent: true,
-    frame: false,
-    webPreferences: { offscreen: true, backgroundThrottling: false },
-  });
-  await win.loadFile(htmlPath);
-  await new Promise((r) => setTimeout(r, 800));
-  const full = await win.webContents.capturePage();
-  win.destroy();
-
+app.whenReady().then(() => {
+  const full = nativeImage.createFromPath(MASTER);
+  if (full.isEmpty()) {
+    console.error(`cannot read ${MASTER} — put a square PNG there first`);
+    app.exit(1);
+    return;
+  }
   const images = SIZES.map((size) => ({
     size,
     buf: full.resize({ width: size, height: size, quality: 'best' }).toPNG(),
   }));
 
-  fs.writeFileSync(path.join(ROOT, 'assets', 'icon.png'), full.resize({ width: 256, height: 256, quality: 'best' }).toPNG());
-  fs.writeFileSync(path.join(__dirname, 'icon.png'), full.resize({ width: 1024, height: 1024, quality: 'best' }).toPNG());
+  fs.writeFileSync(
+    path.join(ROOT, 'assets', 'icon.png'),
+    full.resize({ width: 256, height: 256, quality: 'best' }).toPNG()
+  );
   fs.writeFileSync(path.join(__dirname, 'icon.ico'), packIco(images));
-  console.log('sizes:', images.map((i) => `${i.size}(${i.buf.length}b)`).join(' '));
-  console.log('wrote build/icon.ico, build/icon.png (1024), assets/icon.png (256)');
+  console.log(`regenerated build/icon.ico + assets/icon.png from build/icon.png (${full.getSize().width}px)`);
   app.quit();
 });

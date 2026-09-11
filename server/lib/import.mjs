@@ -1,5 +1,5 @@
 // Node worksheet import: PDF / image -> pages + candidate cards, with answers
-// worked out by Volt's own math engine. Mirrors src/ocr.js but server-side.
+// worked out by Argon's own math engine. Mirrors src/ocr.js but server-side.
 import fs from 'fs';
 import path from 'path';
 import zlib from 'zlib';

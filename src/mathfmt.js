@@ -1,6 +1,6 @@
 import katex from '../node_modules/katex/dist/katex.mjs';
 
-// Volt keeps rendering conservative: plain algebra ("2x + 4 = 10", "(x-3)(x+3)")
+// Argon keeps rendering conservative: plain algebra ("2x + 4 = 10", "(x-3)(x+3)")
 // stays literal and predictable; only notation that is genuinely hard to read in
 // plain text — exponents, roots, fractions, symbols — is typeset with KaTeX.
 

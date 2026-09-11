@@ -1,4 +1,4 @@
-// Volt study engine — flip cards, wrong answers go to the back of the deck, the
+// Argon study engine — flip cards, wrong answers go to the back of the deck, the
 // session ends only when every card is right, then a full answer report.
 // Shared by the student view and the teacher's "preview" button.
 import { el, shuffle } from '/shared/util.js';

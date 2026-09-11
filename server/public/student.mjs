@@ -6,7 +6,7 @@ const app = document.getElementById('app');
 const whoName = document.getElementById('whoName');
 const changeBtn = document.getElementById('changeName');
 
-const LS = 'volt_student_name';
+const LS = 'argon_student_name';
 let name = '';
 try { name = localStorage.getItem(LS) || ''; } catch {}
 
@@ -34,7 +34,7 @@ async function routeHome() {
     const input = el('input', { class: 'field', placeholder: 'Type your name to start', maxlength: 40 });
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && input.value.trim()) { setName(input.value); routeHome(); } });
     app.append(el('div', { class: 'card center-card' },
-      el('h1', {}, '⚡ Volt'),
+      el('h1', {}, '✨ Argon'),
       el('div', { class: 'sub', text: 'Practice the worksheets your teacher set. Cards you miss come back until you get them right.' }),
       input,
       el('div', { style: 'margin-top:12px' },

@@ -1,8 +1,8 @@
 {
-  "name": "volt-server",
+  "name": "argon-server",
   "version": "1.0.0",
   "type": "module",
-  "description": "Volt — teacher tool: worksheets into flashcards, on a server students join",
+  "description": "Argon — teacher tool: worksheets into flashcards, on a server students join",
   "main": "server.mjs",
   "scripts": {
     "start": "node server.mjs",

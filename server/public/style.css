@@ -286,7 +286,7 @@ body.web { display: block; overflow: auto; background: var(--bg); }
   position: sticky; top: 0; z-index: 20;
 }
 .topbar .brand { display: flex; align-items: center; gap: 9px; font-weight: 750; font-size: 15px; }
-.topbar .brand .bolt { color: var(--accent); font-size: 18px; }
+.topbar .brand .mark { color: var(--accent); font-size: 18px; }
 .topbar .who { color: var(--text-dim); font-size: 13px; }
 .topbar a, .topbar button.link {
   color: var(--text-dim); font-size: 13px; background: none; border: 0; cursor: pointer; text-decoration: none;

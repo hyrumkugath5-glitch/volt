@@ -1,6 +1,6 @@
-# ⚡ Volt — server (teacher tool)
+# Argon — server (teacher tool)
 
-Runs Volt as a website. Three roles:
+Runs Argon as a website. Three roles:
 
 | Role | URL | How they get in |
 |------|-----|-----------------|
@@ -29,7 +29,7 @@ First boot hashes your `masterKey` into `config.json` and adds a `sessionSecret`
 - see every deck across all teachers
 
 **Teacher** (`/admin`)
-- **New from worksheet** → upload a PDF or image → Volt reads it, splits it into
+- **New from worksheet** → upload a PDF or image → Argon reads it, splits it into
   problems, solves the ones it can (linear/quadratic/systems, properties of
   exponents), skips Kuta answer-key pages → review & edit the cards → **Save**
 - edit any of your decks; **Preview** runs the study session yourself
@@ -37,7 +37,7 @@ First boot hashes your `masterKey` into `config.json` and adds a `sessionSecret`
 - **Results** — who finished, perfect vs. cleared, retries, time
 
 - **➕ Alternate** — import a second worksheet (same skills, different numbers).
-  Volt pairs the problems by number; then, when **anti-guessing** is on, a
+  Argon pairs the problems by number; then, when **anti-guessing** is on, a
   problem a student misses comes back as the alternate version so they can't
   memorise answers.
 
@@ -68,7 +68,7 @@ See [`deploy/README.md`](deploy/README.md) — tarball → `games` server → sy
 playit.gg, same as the chat app.
 
 ```bash
-bash make-tarball.sh    # -> volt-server.tgz
+bash make-tarball.sh    # -> argon-server.tgz
 ```
 
 ## Tests

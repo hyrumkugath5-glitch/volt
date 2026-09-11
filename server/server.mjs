@@ -1,4 +1,4 @@
-// Volt server — a teacher tool.
+// Argon server — a teacher tool.
 //   owner  (master key)      -> creates teacher accounts, sees everything
 //   teacher (username/pass)  -> imports worksheets, builds & publishes decks
 //   student (no login)       -> joins, studies a teacher's published deck
@@ -78,13 +78,13 @@ function cookies(req) {
 }
 function setSession(res, payload) {
   const tok = makeToken(payload, CONFIG.sessionSecret);
-  res.setHeader('Set-Cookie', `volt_session=${tok}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${14 * 24 * 3600}`);
+  res.setHeader('Set-Cookie', `argon_session=${tok}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${14 * 24 * 3600}`);
 }
 function clearSession(res) {
-  res.setHeader('Set-Cookie', 'volt_session=; HttpOnly; Path=/; Max-Age=0');
+  res.setHeader('Set-Cookie', 'argon_session=; HttpOnly; Path=/; Max-Age=0');
 }
 function session(req) {
-  return readToken(cookies(req).volt_session, CONFIG.sessionSecret);
+  return readToken(cookies(req).argon_session, CONFIG.sessionSecret);
 }
 function requireOwner(req, res, next) {
   const s = session(req);
@@ -384,7 +384,7 @@ app.get('/admin', (req, res) => res.sendFile(path.join(here, 'public', 'admin.ht
 app.get('/owner', (req, res) => res.sendFile(path.join(here, 'public', 'owner.html')));
 
 app.listen(CONFIG.port, CONFIG.host, () => {
-  console.log(`Volt server on http://${CONFIG.host}:${CONFIG.port}`);
+  console.log(`Argon server on http://${CONFIG.host}:${CONFIG.port}`);
   console.log(`  students  ->  /`);
   console.log(`  teachers  ->  /admin`);
   console.log(`  owner     ->  /owner`);

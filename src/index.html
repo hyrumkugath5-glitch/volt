@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'" />
-  <title>Volt</title>
+  <title>Argon</title>
   <link rel="stylesheet" href="../node_modules/katex/dist/katex.min.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <nav id="sidebar">
     <div class="brand">
-      <span class="logo">⚡</span>
-      <span>Volt</span>
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="11" fill="#4a3b82"/><circle cx="12" cy="12" r="8.5" fill="none" stroke="#efeaff" stroke-opacity="0.55" stroke-width="1.2"/><circle cx="12" cy="16" r="6" fill="#d9ccff" fill-opacity="0.5"/><circle cx="9.4" cy="9" r="1.7" fill="#fff"/></svg>
+      </span>
+      <span>Argon</span>
     </div>
     <button class="navbtn active" data-view="library">📚 Library</button>
     <button class="navbtn" data-view="import">➕ New from worksheet</button>
@@ -53,10 +55,10 @@
     (function () {
       try {
         const fs = require('fs');
-        const LOG = require('path').join(require('os').tmpdir(), 'volt-renderer.log');
+        const LOG = require('path').join(require('os').tmpdir(), 'argon-renderer.log');
         const w = (m) => { try { fs.appendFileSync(LOG, `[${new Date().toISOString()}] ${m}\n`); } catch {} };
         fs.writeFileSync(LOG, '');
-        window.__voltlog = w;
+        window.__argonlog = w;
         const errH = (e) => w('ERROR ' + (e.error && e.error.stack || e.message || '') + ' @' + (e.filename || '') + ':' + (e.lineno || ''));
         window.addEventListener('error', errH, true);
         window.addEventListener('unhandledrejection', (e) => w('REJECT ' + (e.reason && e.reason.stack || e.reason)));

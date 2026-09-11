@@ -1,9 +1,9 @@
-# ⚡ Volt
+# Argon
 
 Turn online geometry and algebra worksheets into flashcards that help students
 actually learn the material.
 
-Give it a worksheet (PDF or image). Volt reads it, breaks it into individual
+Give it a worksheet (PDF or image). Argon reads it, breaks it into individual
 problems, and builds a study deck. In study mode a wrong answer goes to the back
 of the deck and comes back until you get it right — and at the end you get a
 report of every problem with its correct answer.
@@ -16,7 +16,7 @@ answers and write hints automatically if you add your own API key.
 ## Running it
 
 ```bash
-cd volt
+cd argon
 npm install
 npm start
 ```
@@ -24,8 +24,8 @@ npm start
 ## Building a Windows installer (.exe)
 
 ```bash
-npm run icon      # regenerates the app icon (only needed if you change build/icon.svg)
-npm run dist      # outputs dist/Volt Setup <version>.exe
+npm run icon      # regenerates the app icon (only needed if you change build/icon.png)
+npm run dist      # outputs dist/Argon Setup <version>.exe
 ```
 
 ---
@@ -34,7 +34,7 @@ npm run dist      # outputs dist/Volt Setup <version>.exe
 
 ### Importing a worksheet
 1. **New from worksheet** → pick a PDF or image (`.pdf .png .jpg .webp .bmp`).
-2. Volt reads it:
+2. Argon reads it:
    - **Digital PDFs** (Cazoom, Kuta, most teacher handouts): the real text is
      extracted directly — column layout and stacked fractions are reconstructed.
      **This is the most accurate option — use the PDF if you have it.**
@@ -45,23 +45,23 @@ npm run dist      # outputs dist/Volt Setup <version>.exe
 3. The text is split on the problem numbers, each problem is classified (linear
    equation, quadratic, factoring, Pythagorean, area, slope, midpoint, systems,
    angles, …), and answers are filled in from three sources, in order:
-   an **answer key** in the file → **Volt's own solver** → **Claude** (if AI is on).
+   an **answer key** in the file → **Argon's own solver** → **Claude** (if AI is on).
 4. You land on a review screen with the original page on the left and the
    editable cards on the right. Each card shows where its answer came from
-   ("from answer key" / "solved by Volt"). Fix anything, hit **⚡ Solve all
+   ("from answer key" / "solved by Argon"). Fix anything, hit **✨ Solve all
    blank answers** for the rest, then **Save deck**.
 
 ### 🔀 "3 readings" — when the question is unclear
 If OCR mangles a problem (`7Tx + 3 = 9 - 5x`, a fraction that came out as noise, a
-missing `=`), Volt reconstructs what the equation most likely was. It shows **up
+missing `=`), Argon reconstructs what the equation most likely was. It shows **up
 to 3 candidate readings**, each solved, labelled "as read" / "adjusted". You
 compare them against the worksheet page (shown right there) and click the right
 one — it fills in both the question and the answer. During import this panel pops
-up automatically for any problem Volt couldn't solve; in the deck editor there's
+up automatically for any problem Argon couldn't solve; in the deck editor there's
 a **🔀 3 readings** button on every card.
 
 ### The built-in math engine
-Volt works out answers, exactly and offline:
+Argon works out answers, exactly and offline:
 
 **Equations** (`src/solve.js`)
 - linear equations in one variable — `3(x - 2) = 9`, `(9 + 7x)/3 = -11`, `7x + 3 = 9 - 5x`
@@ -87,18 +87,18 @@ pages in the same PDF and compares. On "More Properties of Exponents":
 
 ```
 $ node test/verify-key.mjs test/fixtures/exponents.pdf
-ok  # 1  Volt: 1/x^20       key: (1)/(x^20)
-ok  # 5  Volt: 8x^8y^6      key: 8 x^8 y^6
-ok  #22  Volt: (h^3j^4k^2)/2  key: (h^3 j^4 k^2)/(2)
+ok  # 1  Argon: 1/x^20       key: (1)/(x^20)
+ok  # 5  Argon: 8x^8y^6      key: 8 x^8 y^6
+ok  #22  Argon: (h^3j^4k^2)/2  key: (h^3 j^4 k^2)/(2)
 22/22 match the answer key
 ```
 
 ### Kuta Software worksheets
-Volt reads Kuta PDFs specifically well:
+Argon reads Kuta PDFs specifically well:
 - **superscripts** are detected by font size + position and folded into the
   expression (`x` raised `2` → `x^2`), so `(x²)³ · 2x⁴` isn't scrambled
 - **stacked fractions** — the problem number sits between the numerator and
-  denominator rows; Volt re-assembles `N) (numerator)/(denominator)`
+  denominator rows; Argon re-assembles `N) (numerator)/(denominator)`
 - the **anti-copy watermark** Kuta stamps down the page is filtered out
 - **answer-key pages** (Kuta appends them, repeating the problem numbers) are
   detected and skipped — you get one set of cards, not two
@@ -115,7 +115,7 @@ Volt reads Kuta PDFs specifically well:
 ### Anti-guessing (optional)
 Open a deck → **➕ Alternate worksheet** → import a second worksheet that tests
 the same skills with different numbers (e.g. a "Version B", or the same Kuta
-worksheet regenerated). Volt pairs the problems by number. With anti-guessing on,
+worksheet regenerated). Argon pairs the problems by number. With anti-guessing on,
 **a problem the student misses comes back as the alternate version** — so they
 can't just memorise "problem 3 is x = 5". The report shows which version they
 finished on.
@@ -126,7 +126,7 @@ problem type ("The hypotenuse is opposite the right angle… a² + b² = c²…"
 With AI assist on, it asks Claude for a Socratic nudge instead.
 
 ### 📄 Worksheets with graphs & diagrams
-Volt keeps a picture of each source page with the deck. If a problem refers to a
+Argon keeps a picture of each source page with the deck. If a problem refers to a
 graph or figure, click **📄 Worksheet** during study to pull up the original
 page. (Offline OCR reads the problem text; it doesn't interpret the graph
 itself — turn on AI assist and Claude will read graphs from the page image when
@@ -152,7 +152,7 @@ Off by default. **Settings → turn on AI assist → paste an Anthropic API key.
 - Billed separately from Claude Pro — it's a pay-as-you-go API account at
   [console.anthropic.com](https://console.anthropic.com) (add ~$5 of credits).
 - Roughly **$0.01–0.04 per worksheet** with Claude Haiku.
-- The key is stored only on this computer (`%APPDATA%/volt/settings.json`).
+- The key is stored only on this computer (`%APPDATA%/Argon/settings.json`).
 
 With it on, each worksheet page is sent to Claude, which returns the problems,
 fully worked answers, and hints automatically — you just review and save.
@@ -177,13 +177,13 @@ fully worked answers, and hints automatically — you just review and save.
 | `src/calc.js` | Safe expression evaluator + calculator UI |
 | `src/ai.js` | Optional Claude calls |
 | `assets/eng.traineddata.gz` | Bundled OCR language data (offline) |
-| `build/` | Icon source + `.ico` generator |
+| `build/` | Icon (`icon.png`) + `.ico` generator |
 | `test/` | `node test/{solve,exponents,reconstruct}.test.mjs` · `node test/verify-key.mjs <pdf>` (checks the engine against the PDF's own answer key) · `npx electron test/drive.js` (UI) · `npx electron test/ocr.js <pdf>` · `test/readings.js` · `test/peek.js` |
 
 ## Data
 
-Decks and settings live in `%APPDATA%/volt/` (`data.json`, `settings.json`).
-Delete that folder to reset. The OCR language cache is `%APPDATA%/volt/tessdata/`.
+Decks and settings live in `%APPDATA%/Argon/` (`data.json`, `settings.json`).
+Delete that folder to reset. The OCR language cache is `%APPDATA%/Argon/tessdata/`.
 
 ## Turning this into a server app (later)
 

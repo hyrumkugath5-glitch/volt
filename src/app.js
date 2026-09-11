@@ -131,7 +131,7 @@ function renderDeck(id) {
         save();
         toast(n ? `Solved ${n} blank answer${n > 1 ? 's' : ''}.` : 'Nothing else to solve.');
         renderDeck(d.id);
-      } }, '⚡ Solve blanks'),
+      } }, '✨ Solve blanks'),
       el('button', { class: 'btn ghost small', onclick: () => addAlternate(d) }, '➕ Alternate worksheet'),
       el('button', { class: 'btn ghost small', onclick: () => renameDeck(d) }, 'Rename'),
       el('button', { class: 'btn ghost small', onclick: () => addCard(d) }, '+ Card'),
@@ -213,7 +213,7 @@ function cardEditor(deck, card, i) {
       const r = autoAnswer(q.value);
       if (!r) return toast("Couldn't solve that one — check the question against the worksheet.");
       a.value = r.answer; commit(); toast('Solved.');
-    } }, '⚡ Solve'),
+    } }, '✨ Solve'),
     el('button', { class: 'btn small danger', onclick: () => {
       deck.cards = deck.cards.filter((x) => x.id !== card.id);
       save();
@@ -229,7 +229,7 @@ function cardEditor(deck, card, i) {
         q.value = o.question; a.value = o.answer; commit();
         box.querySelector('.readings')?.remove();
       });
-      if (!p) return toast('Volt couldn’t reconstruct that one — type the answer in from the worksheet.');
+      if (!p) return toast('Argon couldn’t reconstruct that one — type the answer in from the worksheet.');
       box.append(p);
     } }, '🔀 3 readings'), actions.lastChild);
   }
@@ -269,12 +269,12 @@ function renderImport() {
   main.innerHTML = '';
   main.append(
     el('h1', { text: 'New deck from a worksheet' }),
-    el('div', { class: 'sub', text: 'Pick a PDF or image. Volt reads it, splits it into problems, solves the equations it can, and lets you review before saving.' })
+    el('div', { class: 'sub', text: 'Pick a PDF or image. Argon reads it, splits it into problems, solves the equations it can, and lets you review before saving.' })
   );
 
   const aiBadge = aiEnabled()
     ? el('div', { class: 'sub', html: '🤖 AI assist is <b>on</b> — every problem and answer is filled in by Claude.' })
-    : el('div', { class: 'sub', html: '⚙ Offline mode. <b>Tip:</b> import the <b>PDF</b> if you have one — screenshots of fraction-heavy sheets read poorly. Volt still solves linear equations, quadratics and systems on its own.' });
+    : el('div', { class: 'sub', html: '⚙ Offline mode. <b>Tip:</b> import the <b>PDF</b> if you have one — screenshots of fraction-heavy sheets read poorly. Argon still solves linear equations, quadratics and systems on its own.' });
   main.append(aiBadge);
 
   const dz = el('div', { class: 'dropzone', text: '📄  Click to choose a worksheet file (PDF, PNG, JPG)' });
@@ -388,7 +388,7 @@ function reviewStage(stage, file, pages, candidates) {
     };
   });
   const solvedCount = model.filter((c) => c.answerSource === 'solved').length;
-  if (solvedCount) setTimeout(() => toast(`Volt solved ${solvedCount} problem${solvedCount > 1 ? 's' : ''} for you — double-check them.`), 400);
+  if (solvedCount) setTimeout(() => toast(`Argon solved ${solvedCount} problem${solvedCount > 1 ? 's' : ''} for you — double-check them.`), 400);
 
   function paintCards() {
     cardsCol.innerHTML = '';
@@ -400,7 +400,7 @@ function reviewStage(stage, file, pages, candidates) {
       a.addEventListener('input', () => { c.answer = a.value; c.answerSource = 'edited'; });
       h.addEventListener('input', () => (c.hint = h.value));
       const srcTag = el('span', { class: 'tag', hidden: c.answerSource !== 'solved' && c.answerSource !== 'key' && c.answerSource !== 'reconstructed',
-        text: c.answerSource === 'key' ? 'from answer key' : c.answerSource === 'reconstructed' ? 'reading you picked' : 'solved by Volt' });
+        text: c.answerSource === 'key' ? 'from answer key' : c.answerSource === 'reconstructed' ? 'reading you picked' : 'solved by Argon' });
       const row = el('div', { class: 'card-row' });
       const applyReading = (o) => {
         c.question = o.question; c.answer = o.answer; c.answerSource = 'reconstructed';
@@ -412,13 +412,13 @@ function reviewStage(stage, file, pages, candidates) {
         const r = autoAnswer(c.question);
         if (!r) return toast("Couldn't solve that one — try '3 readings' or type the answer in.");
         c.answer = r.answer; c.answerSource = 'solved'; a.value = r.answer;
-        srcTag.textContent = 'solved by Volt'; srcTag.hidden = false;
-      } }, '⚡ Solve');
+        srcTag.textContent = 'solved by Argon'; srcTag.hidden = false;
+      } }, '✨ Solve');
       const readingsBtn = el('button', { class: 'btn small ghost', onclick: () => {
         const p = readingsPanel(c.question, applyReading);
         const existing = row.querySelector('.readings');
         if (existing) { existing.remove(); return; }
-        if (!p) return toast("Volt couldn't come up with a clean reading — type the answer in.");
+        if (!p) return toast("Argon couldn't come up with a clean reading — type the answer in.");
         row.append(p);
       } }, '🔀 3 readings');
 
@@ -458,8 +458,8 @@ function reviewStage(stage, file, pages, candidates) {
           if (r) { c.answer = r.answer; c.answerSource = 'solved'; n++; }
         }
         paintCards();
-        toast(n ? `Solved ${n} more.` : 'Nothing left that Volt can solve automatically.');
-      } }, '⚡ Solve all blank answers'),
+        toast(n ? `Solved ${n} more.` : 'Nothing left that Argon can solve automatically.');
+      } }, '✨ Solve all blank answers'),
       el('button', { class: 'btn ghost', onclick: () => { model.push({ id: uid(), question: '', answer: '', hint: '', typeLabel: 'General problem' }); paintCards(); } }, '+ Add blank card'),
       el('button', { class: 'btn', onclick: () => {
         const keep = model.filter((c) => c.question.trim());
@@ -815,7 +815,7 @@ function showCrash(where, err) {
     el('pre', { class: 'crash', text: msg }),
     el('div', { class: 'row' },
       el('button', { class: 'btn', onclick: () => route('library') }, 'Back to library'),
-      el('button', { class: 'btn ghost', onclick: () => location.reload() }, 'Reload Volt'))
+      el('button', { class: 'btn ghost', onclick: () => location.reload() }, 'Reload Argon'))
   );
 }
 window.addEventListener('error', (e) => showCrash('running', e.error || e.message));
